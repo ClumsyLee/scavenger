@@ -1,3 +1,4 @@
+import subprocess
 import requests
 
 def logged_in():
@@ -19,3 +20,18 @@ def logged_in():
     # Failed to get infos
     return False
 
+def arp_scan():
+    """Generate (IP, MAC) pairs using arp-scan"""
+    proc = subprocess.Popen(['sudo', 'arp-scan', '-lq'], stdout=subprocess.PIPE)
+    out = proc.stdout
+    # Skip the first two lines.
+    next(out)
+    next(out)
+    # Parse IPs & MACs
+    for line in out:
+        infos = line.split()
+        if not infos:  # Empty line at the end of the output
+            return
+        if len(infos) < 2:
+            raise RuntimeError('Invalid output of arp-scan: "%s"' % line)
+        yield (infos[0], infos[1])  # Generate (IP, MAC)
