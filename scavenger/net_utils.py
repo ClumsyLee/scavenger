@@ -20,6 +20,13 @@ def check_online():
     # Failed to get infos
     return False
 
+def logout():
+    r = requests.post('http://net.tsinghua.edu.cn/cgi-bin/do_logout')
+    if r.text == 'logout_ok':
+        return True
+    else:
+        return False
+
 def arp_scan():
     """Generate (IP, MAC) pairs using arp-scan"""
     proc = subprocess.Popen(['sudo', 'arp-scan', '-lq'], stdout=subprocess.PIPE)
