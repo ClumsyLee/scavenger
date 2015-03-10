@@ -1,7 +1,7 @@
 import subprocess
 import requests
 
-def logged_in():
+def check_online():
     """Check whether the device has logged in.
     Return a dictionary containing:
         username
