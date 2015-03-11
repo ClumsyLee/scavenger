@@ -42,3 +42,43 @@ def arp_scan():
         if len(infos) < 2:
             raise RuntimeError('Invalid output of arp-scan: "%s"' % line)
         yield (infos[0], infos[1])  # Generate (IP, MAC)
+
+def set_wifi(ssid='Tsinghua-5G'):
+    """Connect to Wi-Fi (By default, Tsinghua-5G)"""
+    subprocess.call(['networksetup', '-setairportnetwork', 'en0', ssid])
+
+def spoof_mac(mac=None, interface='en0'):
+    """Spoof MAC for a certain interface, return True if succeeded
+    if mac is None, reset MAC of the interface"""
+    args = ['sudo', 'spoof-mac']
+    if mac is None:  # Reset
+        args = ['reset']
+    else:
+        args = ['set', mac]
+
+    result = subprocess.call(['sudo', 'spoof-mac'] + args + interface)
+    if result == 0:
+        return True
+    else:
+        return False
+
+def parse_ip(ip_str):
+    return map(int, ip_str.split('.'))
+
+def ip_diff(ip1, ip2):
+    """Return ip2 - ip1
+    ip1/ip2 should like [*,*,*,*]"""
+    diff = 0
+    for i in range(4):
+        diff = 256 * diff + ip2[i] - ip1[i]
+    return diff
+
+__ALL__ = [
+    check_online,
+    logout,
+    arp_scan,
+    set_wifi,
+    spoof_mac,
+    parse_ip,
+    ip_diff
+]
