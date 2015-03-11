@@ -27,7 +27,7 @@ def logout():
     else:
         return False
 
-def arp_scan():
+def arp_scanner():
     """Generate (IP, MAC) pairs using arp-scan"""
     proc = subprocess.Popen(['sudo', 'arp-scan', '-lq'], stdout=subprocess.PIPE)
     out = proc.stdout
@@ -76,7 +76,7 @@ def ip_diff(ip1, ip2):
 __ALL__ = [
     check_online,
     logout,
-    arp_scan,
+    arp_scanner,
     set_wifi,
     spoof_mac,
     parse_ip,
