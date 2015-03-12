@@ -36,14 +36,27 @@ def arp_scanner(interface='en0'):
     # Skip the first two lines.
     next(out)
     next(out)
+    gate = parse_arp_info(next(out))
+    if not gate:
+        raise RuntimeError('No peers found by arp-scan')
+
     # Parse IPs & MACs
     for line in out:
-        infos = line.split()
-        if not infos:  # Empty line at the end of the output
+        infos = parse_arp_info(line)
+        if not infos:  # End of the list
             return
-        if len(infos) < 2:
-            raise RuntimeError('Invalid output of arp-scan: "%s"' % line)
-        yield (infos[0], infos[1])  # Generate (IP, MAC)
+        if infos[1] != gate[1]:
+            yield infos
+
+
+def parse_arp_info(line):
+    infos = line.split()
+    if not infos:  # Empty line at the end of the output
+        return None
+    if len(infos) < 2:
+        raise RuntimeError('Invalid output of arp-scan: "%s"' % line)
+
+    return (infos[0], infos[1])  # Generate (IP, MAC)
 
 def set_wifi(ssid='Tsinghua-5G'):
     """Connect to Wi-Fi (By default, Tsinghua-5G)"""
