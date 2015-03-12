@@ -1,5 +1,6 @@
 import logging
 from random import shuffle
+from sys import argv
 from time import time, sleep
 
 from .net_utils import *
@@ -67,3 +68,16 @@ def try_target(target, interface, max_attempts=5, sleep_time=5):
         logger.info('IP %s not online', ip)
         return False
 
+def main(interface, max_try=10):
+    for i, target in enumerate(target_scaner(interface)):
+        if try_target(target, interface):
+            return True
+        if i >= max_try:
+            return False
+
+if __name__ == '__main__':
+    if len(argv) != 2:
+        print('Usage: python %s <interface> [max_try]' % argv[0])
+        exit(1)
+
+    exit(main(*argv[1:]))
