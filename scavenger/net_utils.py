@@ -1,3 +1,4 @@
+import socket
 import subprocess
 import requests
 
@@ -62,6 +63,12 @@ def spoof_mac(mac=None, interface='en0'):
     else:
         return False
 
+def get_ip():
+    try:
+        return socket.gethostbyname(socket.gethostname())
+    except OSError:
+        return '127.0.0.1'
+
 def parse_ip(ip_str):
     return map(int, ip_str.split('.'))
 
@@ -79,6 +86,7 @@ __ALL__ = [
     arp_scanner,
     set_wifi,
     spoof_mac,
+    get_ip,
     parse_ip,
     ip_diff
 ]
