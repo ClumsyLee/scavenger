@@ -8,7 +8,7 @@ from .net_utils import *
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-def target_scaner(interface, min_interval=30):
+def target_scaner(interface, min_interval=5):
     old_peers = {}
     while True:
         begin_time = time()
