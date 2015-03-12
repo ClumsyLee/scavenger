@@ -37,6 +37,10 @@ def try_target(target, interface, max_attempts=5, sleep_time=5):
         logger.error('Failed to spoof the mac of %s to %s', interface, mac)
         return False
 
+    # Re-connect if needed
+    if interface == 'en0':
+        set_wifi()
+
     for i in range(max_attempts):
         logger.info('Checking IP in %d s (attempt %d)', sleep_time, i)
         sleep(sleep_time)
