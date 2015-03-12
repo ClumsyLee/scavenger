@@ -1,4 +1,5 @@
 import logging
+from random import shuffle
 from time import time, sleep
 
 from .net_utils import *
@@ -18,8 +19,12 @@ def target_scaner(interface, min_interval=30):
             if ip in old_peers:  # Still online
                 del old_peers[ip]  # Remove it from old_peers
         # Now targets in old_peers
-        logger.info("%d target(s) found", len(old_peers))
-        for target in old_peers.items():
+        logger.info('%d peer(s) now, %d target(s) found',
+                    len(peers), len(old_peers))
+
+        targets = old_peers.items()
+        shuffle(targets)
+        for target in targets:
             yield target
 
         old_peers = peers
