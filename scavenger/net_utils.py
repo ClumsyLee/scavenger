@@ -79,8 +79,8 @@ def spoof_mac(mac=None, interface='en0'):
 
 def get_ip():
     try:
-        return socket.gethostbyname(socket.gethostname())
-    except OSError:
+        return socket.gethostbyname(socket.gethostname()).decode()
+    except socket.gaierror:
         return '127.0.0.1'
 
 def parse_ip(ip_str):
