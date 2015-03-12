@@ -19,6 +19,8 @@ def target_scaner(interface, min_interval=30):
         for target in old_peers.items():
             yield target
 
+        old_peers = peers
+
         # Wait for next scanning, if needed
         interval = time() - begin_time
         if interval < min_interval:

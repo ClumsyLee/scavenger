@@ -28,9 +28,10 @@ def logout():
     else:
         return False
 
-def arp_scanner():
+def arp_scanner(interface='en0'):
     """Generate (IP, MAC) pairs using arp-scan"""
-    proc = subprocess.Popen(['sudo', 'arp-scan', '-lq'], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(['sudo', 'arp-scan', '-lq', '-I', interface],
+                            stdout=subprocess.PIPE)
     out = proc.stdout
     # Skip the first two lines.
     next(out)
@@ -57,7 +58,7 @@ def spoof_mac(mac=None, interface='en0'):
     else:
         args = ['set', mac]
 
-    result = subprocess.call(['sudo', 'spoof-mac'] + args + interface)
+    result = subprocess.call(['sudo', 'spoof-mac'] + args + [interface])
     if result == 0:
         return True
     else:
